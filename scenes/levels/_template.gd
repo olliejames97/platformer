@@ -1,8 +1,4 @@
 extends Node2D
-var collision_pos = []
-
-var tile_types= ["Template", "Floor", "Bad", "Bounce", "Start"]
-var tile_scenes = {} 
 
 var tile_offset_x = 0
 var tile_offset_y = 0
@@ -11,10 +7,11 @@ var start_pos: Vector2 = Vector2(0,0)
 
 
 func _ready():
+	var tile_scenes = Global.tile_scenes
+	var tile_types = Global.tile_types
 	# convert tilemap to nodes
 	var tile_rect = $TileMap.get_used_rect()
-	for t in tile_types:
-		tile_scenes[t] = load("res://scenes/tiles/" + t + ".tscn")
+	
 	for tile_position in $TileMap.get_used_cells():
 		var tileNum = $TileMap.get_cellv(tile_position)
 		var world_pos = $TileMap.map_to_world(tile_position)
