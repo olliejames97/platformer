@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://graphics/start.png" type="Texture" id=1]
+[ext_resource path="res://scenes/tiles/Start.gd" type="Script" id=2]
+
+[node name="Start" type="Sprite" groups=[
+"start",
+]]
+texture = ExtResource( 1 )
+script = ExtResource( 2 )

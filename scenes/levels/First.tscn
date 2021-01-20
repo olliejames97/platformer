@@ -1,0 +1,180 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://graphics/ground.png" type="Texture" id=2]
+[ext_resource path="res://graphics/bad.png" type="Texture" id=3]
+[ext_resource path="res://graphics/bounce.png" type="Texture" id=4]
+[ext_resource path="res://graphics/start.png" type="Texture" id=5]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+var collision_pos = []
+
+var tile_types= [\"Template\", \"Floor\", \"Bad\", \"Bounce\", \"Start\"]
+var tile_scenes = {} 
+
+var tile_offset_x = 0
+var tile_offset_y = 0
+
+var start_pos: Vector2 = Vector2(0,0)
+
+
+func _ready():
+	# convert tilemap to nodes
+	var tile_rect = $TileMap.get_used_rect()
+	for t in tile_types:
+		tile_scenes[t] = load(\"res://scenes/tiles/\" + t + \".tscn\")
+	for tile_position in $TileMap.get_used_cells():
+		var tileNum = $TileMap.get_cellv(tile_position)
+		var world_pos = $TileMap.map_to_world(tile_position)
+		var tile_type = tile_types[tileNum]
+		var instance = tile_scenes[tile_type].instance()
+		instance.set_name(tile_type)
+		instance.position.x = world_pos.x + tile_offset_x
+		instance.position.y = world_pos.y + tile_offset_x
+		if tile_type == \"Start\":
+			start_pos = instance.position
+		$World.add_child(instance)
+	remove_child($TileMap)
+	spawn_player()
+	# set players pos
+
+func spawn_player():
+	$Player.set_position(Vector2(start_pos.x - tile_offset_x + 16, start_pos.y - tile_offset_y + 16))
+
+func _process(delta):
+	if Input.is_action_pressed(\"restart\"):
+		spawn_player()
+"
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 32.0996, 32.2593 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 31.9896, 31.9878 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 31.9896, 31.9878 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 31.9896, 31.9878 )
+
+[sub_resource type="TileSet" id=7]
+0/name = "Template"
+0/texture = ExtResource( 2 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 64, 64 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 32, 32 )
+0/navigation_offset = Vector2( 32, 32 )
+0/shape_offset = Vector2( 32, 32 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 32, 32 )
+0/shape = SubResource( 6 )
+0/shape_one_way = false
+0/shape_one_way_margin = 1.0
+0/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 6 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 32, 32 )
+} ]
+0/z_index = 0
+1/name = "Floor"
+1/texture = ExtResource( 2 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 0, 0, 64, 64 )
+1/tile_mode = 0
+1/occluder_offset = Vector2( 32, 32 )
+1/navigation_offset = Vector2( 32, 32 )
+1/shape_offset = Vector2( 32, 32 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 32, 32 )
+1/shape = SubResource( 2 )
+1/shape_one_way = false
+1/shape_one_way_margin = 1.0
+1/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 2 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 32, 32 )
+} ]
+1/z_index = 0
+2/name = "Bounce"
+2/texture = ExtResource( 4 )
+2/tex_offset = Vector2( 0, 0 )
+2/modulate = Color( 1, 1, 1, 1 )
+2/region = Rect2( 0, 0, 64, 64 )
+2/tile_mode = 0
+2/occluder_offset = Vector2( 32, 32 )
+2/navigation_offset = Vector2( 32, 32 )
+2/shape_offset = Vector2( 32, 32 )
+2/shape_transform = Transform2D( 1, 0, 0, 1, 32, 32 )
+2/shape = SubResource( 4 )
+2/shape_one_way = false
+2/shape_one_way_margin = 1.0
+2/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 4 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 32, 32 )
+} ]
+2/z_index = 0
+3/name = "Bad"
+3/texture = ExtResource( 3 )
+3/tex_offset = Vector2( 0, 0 )
+3/modulate = Color( 1, 1, 1, 1 )
+3/region = Rect2( 0, 0, 64, 64 )
+3/tile_mode = 0
+3/occluder_offset = Vector2( 32, 32 )
+3/navigation_offset = Vector2( 32, 32 )
+3/shape_offset = Vector2( 32, 32 )
+3/shape_transform = Transform2D( 1, 0, 0, 1, 32, 32 )
+3/shape = SubResource( 5 )
+3/shape_one_way = false
+3/shape_one_way_margin = 1.0
+3/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 5 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 32, 32 )
+} ]
+3/z_index = 0
+4/name = "Start"
+4/texture = ExtResource( 5 )
+4/tex_offset = Vector2( 0, 0 )
+4/modulate = Color( 1, 1, 1, 1 )
+4/region = Rect2( 0, 0, 64, 64 )
+4/tile_mode = 0
+4/occluder_offset = Vector2( 32, 32 )
+4/navigation_offset = Vector2( 32, 32 )
+4/shape_offset = Vector2( 0, 0 )
+4/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+4/shape_one_way = false
+4/shape_one_way_margin = 0.0
+4/shapes = [  ]
+4/z_index = 0
+
+[node name="Node2D" type="Node2D"]
+visible = false
+script = SubResource( 1 )
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+scale = Vector2( 0.5, 0.5 )
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2( -2.26284, -92.9423 )
+scale = Vector2( 2, 2 )
+current = true
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource( 7 )
+format = 1
+tile_data = PoolIntArray( 5, 1, 0, 6, 1, 0, 7, 1, 0, 65536, 4, 0, 65541, 1, 0, 131077, 1, 0, 196613, 1, 0, 262149, 1, 0, 327685, 1, 0, 393221, 1, 0, 458752, 1, 0, 458753, 1, 0, 458754, 1, 0, 458755, 1, 0, 458756, 3, 0, 458757, 1, 0 )
+
+[node name="World" type="Node2D" parent="."]
+position = Vector2( -136.94, -11.2246 )

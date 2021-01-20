@@ -1,16 +1,33 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://graphics/ground.png" type="Texture" id=1]
+[ext_resource path="res://scenes/tiles/Floor.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/tiles/Bad.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/tiles/Bounce.tscn" type="PackedScene" id=3]
+[ext_resource path="res://graphics/ground.png" type="Texture" id=4]
+[ext_resource path="res://scenes/tiles/Start.tscn" type="PackedScene" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 31.9896, 31.9878 )
+extents = Vector2( 32.0996, 32.2593 )
 
 [node name="Tiles" type="Node2D"]
 
-[node name="Sprite" type="Sprite" parent="."]
-texture = ExtResource( 1 )
+[node name="Template" type="Sprite" parent="."]
+position = Vector2( 0, -78.8445 )
+texture = ExtResource( 4 )
 
-[node name="StaticBody2D" type="StaticBody2D" parent="Sprite"]
+[node name="StaticBody2D" type="StaticBody2D" parent="Template"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite/StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Template/StaticBody2D"]
+visible = false
 shape = SubResource( 1 )
+
+[node name="Floor" parent="." instance=ExtResource( 1 )]
+
+[node name="Bad" parent="." instance=ExtResource( 2 )]
+position = Vector2( 70, 0 )
+
+[node name="Bounce" parent="." instance=ExtResource( 3 )]
+position = Vector2( 140, 0 )
+
+[node name="Start" parent="." instance=ExtResource( 5 )]
+position = Vector2( 210, 0 )
