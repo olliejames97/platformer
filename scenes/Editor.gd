@@ -19,5 +19,4 @@ func _process(delta):
 		print("mouse")
 		print(str(get_global_mouse_position()))
 
-func to_grid(v: Vector2):
-	return Vector2(stepify(v.x, 64), stepify(v.y, 64))
+
