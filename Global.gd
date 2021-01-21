@@ -7,7 +7,7 @@ var tile_scenes = {}
 
 var start_pos: Vector2 = Vector2(0,0)
 
-var hello = "world"
+
 func _ready():
 	print ("ready global")
 	for t in tile_types:
@@ -20,7 +20,8 @@ func grid_snap(v: Vector2):
 func to_world(v: Vector2):
 	return grid_snap(v * 64)
 
-
+func to_grid(v: Vector2):
+	return Vector2(int(round(v.x / 64)),int(round(v.y / 64)))
 
 var level = {}
 var block_class = load("res://block.gd")
