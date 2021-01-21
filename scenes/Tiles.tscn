@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/tiles/Floor.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/tiles/Bad.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/tiles/Bounce.tscn" type="PackedScene" id=3]
 [ext_resource path="res://graphics/ground.png" type="Texture" id=4]
 [ext_resource path="res://scenes/tiles/Start.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/tiles/RampRight.tscn" type="PackedScene" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32.0996, 32.2593 )
@@ -20,6 +21,8 @@ texture = ExtResource( 4 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Template/StaticBody2D"]
 visible = false
 shape = SubResource( 1 )
+
+[node name="RampRight" parent="." instance=ExtResource( 6 )]
 
 [node name="Floor" parent="." instance=ExtResource( 1 )]
 
