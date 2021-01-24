@@ -31,12 +31,10 @@ func level_importer(scene_node: Node2D, level_json: String):
 	for b in level.blocks:
 		var flipped = false
 		if !tile_types.has(b.type):
-			print("Bad block type, skipping " + b.type)
 			break
 		if b.type == "Start":
 			start_pos = Vector2(b.x, b.y)
 		if b.flip == true:
-			print("flipped block")
 			flipped = true
 		var block = block_class.new()
 		block.construct(scene_node, b.type, Vector2(b.x, b.y), flipped)

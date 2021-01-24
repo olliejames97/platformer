@@ -3,6 +3,7 @@ extends Node2D
 var start_pos = Vector2(0,0)
 
 var this_level = {}
+var block_instances = {}
 var tile_index = 1;
 var selected_tile = Global.tile_types[tile_index]
 
@@ -34,8 +35,10 @@ func spawn_player():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	
 	if(pointer.instance != null):
 		pointer.instance.position = Global.grid_snap(get_global_mouse_position())
+		
 	
 	var grid_pos = Global.to_grid(get_global_mouse_position())
 	if(Input.is_action_pressed("mouse_left")):
@@ -45,13 +48,18 @@ func _process(delta):
 		obj.y = grid_pos.y
 		obj.flip = flipped
 		this_level.blocks.push_back(obj)
-		reload()
+		var block = block_class.new()
+		block.construct($World, selected_tile, Vector2(obj.x, obj.y), flipped)
+		block_instances[str(Vector2(obj.x, obj.y))] =  block.instance
+		block.spawn()
+		if(obj.type == "Start"):
+			start_pos = Vector2(obj.x, obj.y)
+		# reload()
 
 	if(Input.is_action_just_released("flip")):
 		pointer.flip()
 		flipped = !flipped
 		refresh_pointer()
-		print("flip")
 				
 	if(Input.is_action_pressed("mouse_right")):
 		for b in this_level.blocks:
