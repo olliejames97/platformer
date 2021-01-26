@@ -13,5 +13,14 @@ script = ExtResource( 1 )
 format = 1
 
 [node name="Pointer" parent="." instance=ExtResource( 2 )]
+position = Vector2( -81.0489, 469.872 )
+
+[node name="Floor" parent="Pointer" instance=ExtResource( 2 )]
+position = Vector2( 592.727, -95.9119 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
+position = Vector2( 511.72, 300.358 )
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+current = true
+smoothing_enabled = true

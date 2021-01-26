@@ -11,27 +11,42 @@ const MOVE_SPEED = 700
 const JUMP_FORCE = 1400
 const GRAVITY = 70
 const MAX_FALL_SPEED = 100
- 
+
+const DASH_SPEED = 2000
+const DASH_DURATION = 5
+const DASH_MAX_COOLDOWN = 20
+var is_dashing = false
+
 onready var sprite = $Sprite
  
 var y_velo = 0
 var facing_right = false
+var final_move_speed = 0
 
 
-func _process(_delta):
+var dash_count = 0
+var dash_cd = 0
+var can_jump = true
+
+
+func _physics_process(_delta):
+	final_move_speed = MOVE_SPEED
 	var move_dir = 0
 	if Input.is_action_pressed(\"move_right\"):
 		move_dir += 1
 	if Input.is_action_pressed(\"move_left\"):
 		move_dir -= 1
-		
+			
 	var grounded = is_on_floor()
 	
+
 	y_velo += GRAVITY
 	if grounded and y_velo >= 5:
 			y_velo = 5
 			
-	if grounded and Input.is_action_pressed(\"jump\"):
+	can_jump = grounded
+	if can_jump and Input.is_action_pressed(\"jump\"):
+		is_dashing = false
 		y_velo = -JUMP_FORCE
 		if y_velo > MAX_FALL_SPEED:
 			y_velo = MAX_FALL_SPEED
@@ -39,8 +54,23 @@ func _process(_delta):
 		flip()
 	if !facing_right and move_dir > 0:
 		flip()
-	
-	move_and_slide(Vector2(move_dir * MOVE_SPEED, y_velo), Vector2(0, -1))
+		
+	if Input.is_action_pressed(\"dash\"):
+		if !is_dashing and dash_cd <= 0:
+			is_dashing = true
+			dash_count = DASH_DURATION
+			dash_cd = DASH_MAX_COOLDOWN
+
+	if is_dashing:
+		final_move_speed = DASH_SPEED
+		dash_count -= 1
+		y_velo = 0
+		if dash_count < 0:
+			is_dashing = false
+			
+	if dash_cd > 0:
+		dash_cd -= 1
+	move_and_slide(Vector2(move_dir * final_move_speed, y_velo), Vector2(0, -1))
 	collision()
 
 func flip():
