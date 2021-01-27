@@ -28,16 +28,16 @@ var block_class = load("res://block.gd")
 
 func level_importer(scene_node: Node2D, level_json: String):
 	level = parse_json(level_json)
+	print("Importing level")
 	for b in level.blocks:
 		var flipped = false
 		if !tile_types.has(b.type):
 			break
 		if b.type == "Start":
 			start_pos = Vector2(b.x, b.y)
-		if b.flip == true:
-			flipped = true
+		
 		var block = block_class.new()
-		block.construct(scene_node, b.type, Vector2(b.x, b.y), flipped)
+		block.construct(scene_node, b.type, Vector2(b.x, b.y), false)
 		block.spawn()
 		
 	return start_pos

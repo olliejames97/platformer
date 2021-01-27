@@ -11,3 +11,7 @@ position = Vector2( 209.54, 94.3875 )
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 current = true
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="World" type="Node2D" parent="."]
